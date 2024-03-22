@@ -1,6 +1,6 @@
-package carsjob.repository;
+package ru.carsjob.repository;
 
-import carsjob.model.User;
+import ru.carsjob.model.User;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

@@ -1,4 +1,4 @@
-package carsjob.model;
+package ru.carsjob.model;
 
 import lombok.Data;
 

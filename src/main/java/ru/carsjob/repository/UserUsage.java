@@ -1,6 +1,6 @@
-package carsjob.repository;
+package ru.carsjob.repository;
 
-import carsjob.model.User;
+import ru.carsjob.model.User;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
