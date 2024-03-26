@@ -1,5 +1,6 @@
 package ru.carsjob.repository;
 
+import lombok.extern.slf4j.Slf4j;
 import ru.carsjob.model.User;
 import lombok.AllArgsConstructor;
 import org.hibernate.Session;
@@ -10,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
+@Slf4j
 public class UserRepository {
 
     private final SessionFactory sf;
@@ -29,6 +31,7 @@ public class UserRepository {
             return user;
         } catch (Exception e) {
             session.getTransaction().rollback();
+            log.error(e.getMessage(), e);
         }
         return null;
     }
@@ -41,11 +44,15 @@ public class UserRepository {
         Session session = sf.getCurrentSession();
         try {
             session.beginTransaction();
-            session.update(user);
+            session.createQuery("update User set login = :login, password = :password where id = :id")
+                   .setParameter("login", user.getLogin())
+                   .setParameter("password", user.getPassword())
+                   .setParameter("id", user.getId()).executeUpdate();
             session.getTransaction().commit();
             session.close();
         } catch (Exception e) {
             session.getTransaction().rollback();
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -57,13 +64,14 @@ public class UserRepository {
         Session session = sf.getCurrentSession();
         try {
             session.beginTransaction();
-            User user = new User();
-            user.setId(userId);
-            session.delete(user);
+            session.createQuery("delete from User where id = :id")
+                   .setParameter("id", userId)
+                   .executeUpdate();
             session.getTransaction().commit();
             session.close();
         } catch (Exception e) {
             session.getTransaction().rollback();
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -83,6 +91,7 @@ public class UserRepository {
             return users;
         } catch (Exception e) {
             session.getTransaction().rollback();
+            log.error(e.getMessage(), e);
         }
         return Collections.emptyList();
     }
@@ -104,6 +113,7 @@ public class UserRepository {
             return user;
         } catch (Exception e) {
             session.getTransaction().rollback();
+            log.error(e.getMessage(), e);
         }
         return Optional.empty();
     }
@@ -125,6 +135,7 @@ public class UserRepository {
             return users;
         } catch (Exception e) {
             session.getTransaction().rollback();
+            log.error(e.getMessage(), e);
         }
         return Collections.emptyList();
     }
@@ -147,6 +158,7 @@ public class UserRepository {
             return user;
         } catch (Exception e) {
             session.getTransaction().rollback();
+            log.error(e.getMessage(), e);
         }
         return Optional.empty();
     }
